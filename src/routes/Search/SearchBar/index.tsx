@@ -1,14 +1,18 @@
-import { useState } from 'react'
+import { FormEvent, ChangeEvent, useState } from 'react'
+import { useSetRecoilState } from 'recoil'
+import { searchState } from 'recoil/search'
 import styles from './SearchBar.module.scss'
 
 export default function SearchBar() {
   const [value, setValue] = useState('')
+  const setSearchVal = useSetRecoilState(searchState)
 
-  const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSearch = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
+    setSearchVal(value)
   }
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setValue(e.currentTarget.value)
   }
 

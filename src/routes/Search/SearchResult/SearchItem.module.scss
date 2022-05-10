@@ -1,0 +1,27 @@
+.wrapper {
+  display: flex;
+  margin-bottom: 20px;
+  border: 1px solid;
+
+  .imgWrapper {
+    img {
+      display: block;
+      width: 100px;
+      height: 150px;
+      object-fit: cover;
+    }
+  }
+
+  ul {
+    padding: 5px;
+
+    li {
+      display: flex;
+      margin-bottom: 5px;
+
+      dt {
+        padding-right: 10px;
+      }
+    }
+  }
+}

@@ -1,11 +1,11 @@
 import styles from './SearchItem.module.scss'
 import { ISearchItem } from 'types/search.d'
 
-interface Props {
+interface IProps {
   item: ISearchItem
 }
 
-export default function SearchItem({ item }: Props) {
+export default function SearchItem({ item }: IProps) {
   return (
     <li className={styles.wrapper}>
       <div className={styles.imgWrapper}>

@@ -1,51 +1,48 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef } from 'react'
 
 interface IProps {
-  rootEle?: HTMLElement | null
   rootMargin?: string
   threshold?: number
-  targetEle: HTMLDivElement | null
-  hasData: boolean
-  endPage: number
+  disable: boolean
+  hasNextPage: boolean
+  fetchCallback: (page: number) => Promise<void>
 }
 
 export default function useInfiniteScroll({
-  rootEle = null,
   rootMargin = '0px',
   threshold = 0,
-  targetEle,
-  hasData,
-  endPage,
+  disable,
+  hasNextPage,
+  fetchCallback,
 }: IProps) {
-  const [page, setPage] = useState(1)
-  const [canIncPage, setCanIncPage] = useState(true)
-  console.log('infinite', page)
+  const page = useRef(1)
+  const rootRef = useRef<HTMLDivElement>(null)
+  const targetRef = useRef<HTMLLIElement>(null)
+
   useEffect(() => {
-    if (!targetEle || !hasData || !canIncPage) return undefined
+    if (!targetRef.current || disable || !hasNextPage) return undefined
 
     const handleObserver = (entries: IntersectionObserverEntry[]) => {
       const target = entries[0]
       if (target.isIntersecting) {
-        setPage((prev) => prev + 1)
+        page.current += 1
+        fetchCallback(page.current)
       }
     }
 
     const option = {
-      root: rootEle,
+      root: rootRef.current,
       rootMargin,
       threshold,
     }
     const observer = new IntersectionObserver(handleObserver, option)
-    observer.observe(targetEle)
+    observer.observe(targetRef.current)
 
-    return () => observer && observer.disconnect()
-  }, [canIncPage, hasData, rootEle, rootMargin, targetEle, threshold])
-
-  useEffect(() => {
-    if (endPage > 0 && page >= endPage) {
-      setCanIncPage(false)
+    return () => {
+      observer && observer.disconnect()
+      page.current = 1
     }
-  }, [page, endPage])
+  }, [disable, fetchCallback, hasNextPage, rootMargin, threshold])
 
-  return page
+  return { targetRef, rootRef }
 }

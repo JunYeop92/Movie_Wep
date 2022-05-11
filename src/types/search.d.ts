@@ -11,3 +11,8 @@ export interface ISearchAPIRes {
   totalResults: string
   Response: string
 }
+
+export interface ISearchParams {
+  s: string
+  page: number
+}

@@ -1,14 +1,9 @@
 import { axios } from 'hooks/worker'
-import { ISearchAPIRes } from 'types/search.d'
+import { ISearchAPIRes, ISearchParams } from 'types/search.d'
 
 const OMD_BASE_URL = 'http://www.omdbapi.com/'
 
-interface Params {
-  s: string
-  page: number
-}
-
-export const getSearchResApi = (params: Params) =>
+export const getSearchResApi = (params: ISearchParams) =>
   axios.get<ISearchAPIRes>(OMD_BASE_URL, {
     params: {
       apikey: process.env.REACT_APP_OMD_API_KEY,

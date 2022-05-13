@@ -11,5 +11,13 @@
       line-height: 40px;
       text-align: center;
     }
+
+    a {
+      color: colors.$GRAY2;
+
+      &.active {
+        font-weight: 600;
+      }
+    }
   }
 }

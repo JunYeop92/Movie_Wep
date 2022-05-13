@@ -10,6 +10,7 @@ export default function App() {
     <div className={styles.app}>
       <Routes>
         <Route path='/' element={<Search />} />
+        <Route path='search' element={<Search />} />
         <Route path='favorites' element={<Favorites />} />
       </Routes>
       <footer>

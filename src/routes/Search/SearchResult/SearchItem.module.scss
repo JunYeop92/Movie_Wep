@@ -1,27 +1,56 @@
+@use '/src/styles/constants/colors';
+@use '/src/styles/mixins/flexbox';
+
 .wrapper {
-  display: flex;
   margin-bottom: 20px;
   border: 1px solid;
 
-  .imgWrapper {
-    img {
-      display: block;
-      width: 100px;
-      height: 150px;
-      object-fit: cover;
+  button[type='button'] {
+    display: flex;
+    width: 100%;
+
+    .imgWrapper {
+      img {
+        display: block;
+        width: 100px;
+        height: 150px;
+        object-fit: cover;
+      }
+    }
+
+    ul {
+      padding: 5px;
+
+      li {
+        display: flex;
+        margin-bottom: 5px;
+
+        dt {
+          padding-right: 10px;
+        }
+      }
+
+      .icon {
+        width: 30px;
+      }
     }
   }
+}
 
-  ul {
-    padding: 5px;
+.modalContent {
+  @include flexbox.flexbox(between, center);
+  width: 70%;
 
-    li {
-      display: flex;
-      margin-bottom: 5px;
+  button[type='button'] {
+    width: 90px;
+    height: 50px;
+    line-height: 50px;
+    border: 1px solid;
+    border-radius: 10px;
 
-      dt {
-        padding-right: 10px;
-      }
+    &:hover {
+      color: colors.$WHITE;
+      background-color: colors.$BLACK;
     }
   }
 }

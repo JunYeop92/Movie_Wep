@@ -4,6 +4,7 @@ export interface ISearchItem {
   imdbID: string
   Type: string
   Poster: string
+  isFavor: boolean
 }
 
 export interface ISearchAPIRes {

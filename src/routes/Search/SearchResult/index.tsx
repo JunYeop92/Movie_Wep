@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react'
 import { useRecoilState, useRecoilValue } from 'recoil'
-import { searchInput, isInitSearch } from 'recoil/search'
+import { searchInput, isInitSearch, atomSearchItems } from 'recoil/search'
 import { ISearchItem } from 'types/search'
 import { getSearchResApi } from 'services/search'
 import useInfiniteScroll from 'hooks/useInfiniteScroll'
@@ -10,8 +10,9 @@ import styles from './SearchResult.module.scss'
 
 const fetchSearchData = async (s: string, page: number) => {
   const { data } = await getSearchResApi({ s, page })
-  const { Search: searchItems, totalResults } = data
+  const { Search: dataItems, totalResults } = data
   const endPage = Math.ceil(Number(totalResults) / 10)
+  const searchItems = dataItems.map((item) => ({ ...item, isFavor: false }))
 
   return { searchItems, endPage }
 }
@@ -19,7 +20,7 @@ const fetchSearchData = async (s: string, page: number) => {
 export default function SearchResult() {
   const [isInit, setIsInit] = useRecoilState(isInitSearch)
   const searchInputVal = useRecoilValue(searchInput)
-  const [items, setItems] = useState<ISearchItem[]>([])
+  const [items, setItems] = useRecoilState(atomSearchItems)
   const [hasNextPage, setHasNextPage] = useState(false)
 
   const fetchCallback = useCallback(
@@ -30,7 +31,7 @@ export default function SearchResult() {
       setItems((prev) => [...prev, ...searchItems])
       setHasNextPage(page < endPage)
     },
-    [searchInputVal]
+    [searchInputVal, setItems]
   )
 
   const { targetRef } = useInfiniteScroll({
@@ -44,7 +45,7 @@ export default function SearchResult() {
     setHasNextPage(false)
     setItems([])
     setIsInit(false)
-  }, [isInit, setIsInit])
+  }, [isInit, setIsInit, setItems])
 
   return (
     <article className={styles.wrapper}>

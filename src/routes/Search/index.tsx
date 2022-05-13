@@ -12,7 +12,9 @@ export default function Search() {
         <SearchBar />
       </header>
       <main className={styles.main}>
-        <SearchResult />
+        <Suspense fallback={<div>loading...</div>}>
+          <SearchResult />
+        </Suspense>
       </main>
     </>
   )

@@ -44,5 +44,9 @@ export default function useInfiniteScroll({
     }
   }, [disable, fetchCallback, hasNextPage, rootMargin, threshold])
 
+  useEffect(() => {
+    fetchCallback(1)
+  }, [fetchCallback])
+
   return { targetRef, rootRef }
 }

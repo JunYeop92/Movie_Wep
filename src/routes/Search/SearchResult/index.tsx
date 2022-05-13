@@ -1,9 +1,10 @@
-import useInfiniteScroll from 'hooks/useInfiniteScroll'
 import { useCallback, useEffect, useState } from 'react'
 import { useRecoilState, useRecoilValue } from 'recoil'
 import { searchInput, isInitSearch } from 'recoil/search'
-import { getSearchResApi } from 'services/search'
 import { ISearchItem } from 'types/search'
+import { getSearchResApi } from 'services/search'
+import useInfiniteScroll from 'hooks/useInfiniteScroll'
+
 import SearchItem from './SearchItem'
 import styles from './SearchResult.module.scss'
 
@@ -44,10 +45,6 @@ export default function SearchResult() {
     setItems([])
     setIsInit(false)
   }, [isInit, setIsInit])
-
-  useEffect(() => {
-    fetchCallback(1)
-  }, [fetchCallback])
 
   return (
     <article className={styles.wrapper}>

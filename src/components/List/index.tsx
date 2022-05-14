@@ -15,9 +15,8 @@ export default function List({ items, targetRef, isFavorType = false }: IProps) 
         <div>검색 결과가 없습니다.</div>
       ) : (
         <ul>
-          {items.map((item: ISearchItem, index) => {
-            const key = `searchItem-${index}`
-            return <Item key={key} item={item} isFavorType={isFavorType} />
+          {items.map((item: ISearchItem) => {
+            return <Item key={item.imdbID} item={item} isFavorType={isFavorType} />
           })}
           {targetRef && <li className={styles.endPoint} ref={targetRef} />}
         </ul>

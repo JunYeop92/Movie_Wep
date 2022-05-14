@@ -1,17 +1,20 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { useRecoilState } from 'recoil'
 import { searchInput, isInitSearch, atomSearchItems } from 'recoil/search'
 import { getSearchResApi } from 'services/search'
 import useInfiniteScroll from 'hooks/useInfiniteScroll'
 import List from 'components/List'
+import _ from 'lodash'
+import { getOverlapCount } from 'utils'
 
 const fetchSearchData = async (s: string, page: number) => {
   const { data } = await getSearchResApi({ s, page })
   const { Search: dataItems, totalResults } = data
-  const endPage = Math.ceil(Number(totalResults) / 10)
-  const searchItems = dataItems.map((item) => ({ ...item, isFavor: false }))
+  const originItems = dataItems.map((item) => ({ ...item, isFavor: false }))
 
-  return { searchItems, endPage }
+  const overlapCount = getOverlapCount(originItems, 'imdbID') // 중복 개수
+  const searchItems = _.uniqBy(originItems, 'imdbID') // 중복 제거
+  return { searchItems, totalResults: Number(totalResults), overlapCount }
 }
 
 export default function SearchResult() {
@@ -19,13 +22,15 @@ export default function SearchResult() {
   const [searchInputVal, setSearchVal] = useRecoilState(searchInput)
   const [items, setItems] = useRecoilState(atomSearchItems)
   const [hasNextPage, setHasNextPage] = useState(false)
+  const overlapCountRef = useRef(0)
 
   const fetchCallback = useCallback(
     async (page: number) => {
       if (searchInputVal === '') return
-
-      const { searchItems, endPage } = await fetchSearchData(searchInputVal, page)
+      const { searchItems, totalResults, overlapCount } = await fetchSearchData(searchInputVal, page)
       setItems((prev) => [...prev, ...searchItems])
+      overlapCountRef.current += overlapCount
+      const endPage = Math.ceil(Number(totalResults - overlapCountRef.current) / 10) // 최종 개수 - 중복 개수
       setHasNextPage(page < endPage)
     },
     [searchInputVal, setItems]
@@ -38,11 +43,15 @@ export default function SearchResult() {
   })
 
   useEffect(() => {
-    if (!isInit) return
-    setHasNextPage(false)
-    setItems([])
-    setIsInit(false)
-  }, [isInit, setIsInit, setItems, setSearchVal])
+    ;(async () => {
+      if (!isInit) return
+      setHasNextPage(false)
+      setItems([])
+      setIsInit(false)
+      overlapCountRef.current = 0
+      await fetchCallback(1)
+    })()
+  }, [fetchCallback, isInit, setIsInit, setItems, setSearchVal])
 
   useEffect(() => {
     return () => {
@@ -50,7 +59,10 @@ export default function SearchResult() {
       setSearchVal('')
     }
   }, [setItems, setSearchVal])
-  console.log(items.length)
+
+  // useEffect(() => {
+  //   fetchCallback(1)
+  // }, [fetchCallback])
 
   return <List items={items} targetRef={targetRef} />
 }

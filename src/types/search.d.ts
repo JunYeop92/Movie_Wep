@@ -9,8 +9,8 @@ export interface ISearchItem {
 
 export interface ISearchAPIRes {
   Search: ISearchItem[]
-  totalResults: string
-  Response: string
+  totalResults: number
+  Response: boolean
 }
 
 export interface ISearchParams {

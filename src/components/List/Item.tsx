@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useSetRecoilState } from 'recoil'
-import { atomFavorItems, atomSearchItems } from 'recoil/search'
+import { searchItemsAtom, favorItemsAtom } from 'recoil/search'
 import { ISearchItem } from 'types/search.d'
 
 import styles from './Item.module.scss'
@@ -14,8 +14,8 @@ interface IProps {
 }
 
 export default function Item({ item, isFavorType = false }: IProps) {
-  const setItems = useSetRecoilState(atomSearchItems)
-  const setFavorItems = useSetRecoilState(atomFavorItems)
+  const setItems = useSetRecoilState(searchItemsAtom)
+  const setFavorItems = useSetRecoilState(favorItemsAtom)
   const [isOpen, setIsOpen] = useState(false)
   const handleClickOpen = () => setIsOpen(true)
   const handleClickClose = () => setIsOpen(false)

@@ -14,7 +14,16 @@ const requestError = (error: any): any => {
   return Promise.reject(error)
 }
 
-const resolveResponse = (response: AxiosResponse): AxiosResponse => response
+const resolveResponse = (response: AxiosResponse): AxiosResponse => {
+  const { data } = response
+  response.data = {
+    ...data,
+    Response: data.Response === 'True',
+    totalResults: Number(data.totalResults),
+  }
+
+  return response
+}
 
 const responseError = (error: AxiosError): Promise<never> => {
   // eslint-disable-next-line no-console

@@ -12,7 +12,12 @@ export const isInitSearch = atom({
 })
 
 export const atomSearchItems = atom<ISearchItem[]>({
-  key: 'searchItems',
+  key: 'atomSearchItems',
+  default: [],
+})
+
+export const atomFavorItems = atom<ISearchItem[]>({
+  key: 'atomFavorItems',
   default: [],
 })
 

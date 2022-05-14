@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react'
-import { useRecoilState, useRecoilValue } from 'recoil'
+import { useRecoilState } from 'recoil'
 import { searchInput, isInitSearch, atomSearchItems } from 'recoil/search'
 import { getSearchResApi } from 'services/search'
 import useInfiniteScroll from 'hooks/useInfiniteScroll'
@@ -16,7 +16,7 @@ const fetchSearchData = async (s: string, page: number) => {
 
 export default function SearchResult() {
   const [isInit, setIsInit] = useRecoilState(isInitSearch)
-  const searchInputVal = useRecoilValue(searchInput)
+  const [searchInputVal, setSearchVal] = useRecoilState(searchInput)
   const [items, setItems] = useRecoilState(atomSearchItems)
   const [hasNextPage, setHasNextPage] = useState(false)
 
@@ -42,7 +42,15 @@ export default function SearchResult() {
     setHasNextPage(false)
     setItems([])
     setIsInit(false)
-  }, [isInit, setIsInit, setItems])
+  }, [isInit, setIsInit, setItems, setSearchVal])
+
+  useEffect(() => {
+    return () => {
+      setItems([])
+      setSearchVal('')
+    }
+  }, [setItems, setSearchVal])
+  console.log(items.length)
 
   return <List items={items} targetRef={targetRef} />
 }

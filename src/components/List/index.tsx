@@ -4,10 +4,11 @@ import Item from './Item'
 
 interface IProps {
   items: ISearchItem[]
-  targetRef: React.LegacyRef<HTMLLIElement>
+  targetRef?: React.LegacyRef<HTMLLIElement>
+  isFavorType?: boolean
 }
 
-export default function List({ items, targetRef }: IProps) {
+export default function List({ items, targetRef, isFavorType = false }: IProps) {
   return (
     <article className={styles.wrapper}>
       {items.length === 0 ? (
@@ -16,9 +17,9 @@ export default function List({ items, targetRef }: IProps) {
         <ul>
           {items.map((item: ISearchItem, index) => {
             const key = `searchItem-${index}`
-            return <Item key={key} item={item} />
+            return <Item key={key} item={item} isFavorType={isFavorType} />
           })}
-          <li className={styles.endPoint} ref={targetRef} />
+          {targetRef && <li className={styles.endPoint} ref={targetRef} />}
         </ul>
       )}
     </article>

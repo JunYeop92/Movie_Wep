@@ -1,6 +1,5 @@
 import { Routes, Route } from 'react-router-dom'
 import styles from './Routes.module.scss'
-
 import Search from './Search'
 import Favorites from './Favorites'
 import BottomTabBar from 'components/common/BottomTabBar'

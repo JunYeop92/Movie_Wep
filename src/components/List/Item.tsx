@@ -1,27 +1,40 @@
 import { useState } from 'react'
 import { useSetRecoilState } from 'recoil'
-import { atomSearchItems } from 'recoil/search'
+import { atomFavorItems, atomSearchItems } from 'recoil/search'
 import { ISearchItem } from 'types/search.d'
 
 import styles from './Item.module.scss'
 import { StarFullIcon, StarIcon } from 'assets/svgs'
 import Modal from 'components/Modal'
+import { favorStorage } from 'utils'
 
 interface IProps {
   item: ISearchItem
+  isFavorType?: boolean
 }
 
-export default function Item({ item }: IProps) {
+export default function Item({ item, isFavorType = false }: IProps) {
   const setItems = useSetRecoilState(atomSearchItems)
+  const setFavorItems = useSetRecoilState(atomFavorItems)
   const [isOpen, setIsOpen] = useState(false)
   const handleClickOpen = () => setIsOpen(true)
   const handleClickClose = () => setIsOpen(false)
-  const handleClickFavor = (imdbID: string) => () => {
-    setItems((prev) => prev.map((data) => (data.imdbID === imdbID ? { ...data, isFavor: true } : data)))
+
+  const handleClickFavor = () => {
+    const localDatas = favorStorage.getItem('favorItems')
+    favorStorage.setItem('favorItems', [...localDatas, { ...item, isFavor: true }])
+
+    setItems((prev) => prev.map((data) => (data.imdbID === item.imdbID ? { ...data, isFavor: true } : data)))
     setIsOpen(false)
   }
-  const handleClickNotFavor = (imdbID: string) => () => {
-    setItems((prev) => prev.map((data) => (data.imdbID === imdbID ? { ...data, isFavor: false } : data)))
+  const handleClickNotFavor = () => {
+    const localDatas = favorStorage.getItem('favorItems')
+    favorStorage.setItem(
+      'favorItems',
+      localDatas.filter((data: ISearchItem) => data.imdbID !== item.imdbID)
+    )
+    if (isFavorType) setFavorItems((prev) => prev.filter((data) => data.imdbID !== item.imdbID))
+    else setItems((prev) => prev.map((data) => (data.imdbID === item.imdbID ? { ...data, isFavor: false } : data)))
     setIsOpen(false)
   }
 
@@ -51,11 +64,11 @@ export default function Item({ item }: IProps) {
         <Modal>
           <div className={styles.modalContent}>
             {item.isFavor ? (
-              <button type='button' onClick={handleClickNotFavor(item.imdbID)}>
+              <button type='button' onClick={handleClickNotFavor}>
                 즐겨찾기 제거
               </button>
             ) : (
-              <button type='button' onClick={handleClickFavor(item.imdbID)}>
+              <button type='button' onClick={handleClickFavor}>
                 즐겨찾기
               </button>
             )}

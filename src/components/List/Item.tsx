@@ -1,16 +1,17 @@
 import { useState } from 'react'
-import styles from './SearchItem.module.scss'
-import { ISearchItem } from 'types/search.d'
-import Modal from 'components/Modal'
 import { useSetRecoilState } from 'recoil'
 import { atomSearchItems } from 'recoil/search'
+import { ISearchItem } from 'types/search.d'
+
+import styles from './Item.module.scss'
 import { StarFullIcon, StarIcon } from 'assets/svgs'
+import Modal from 'components/Modal'
 
 interface IProps {
   item: ISearchItem
 }
 
-export default function SearchItem({ item }: IProps) {
+export default function Item({ item }: IProps) {
   const setItems = useSetRecoilState(atomSearchItems)
   const [isOpen, setIsOpen] = useState(false)
   const handleClickOpen = () => setIsOpen(true)

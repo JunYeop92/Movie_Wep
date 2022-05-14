@@ -1,12 +1,9 @@
 import { useCallback, useEffect, useState } from 'react'
 import { useRecoilState, useRecoilValue } from 'recoil'
 import { searchInput, isInitSearch, atomSearchItems } from 'recoil/search'
-import { ISearchItem } from 'types/search'
 import { getSearchResApi } from 'services/search'
 import useInfiniteScroll from 'hooks/useInfiniteScroll'
-
-import SearchItem from './SearchItem'
-import styles from './SearchResult.module.scss'
+import List from 'components/List'
 
 const fetchSearchData = async (s: string, page: number) => {
   const { data } = await getSearchResApi({ s, page })
@@ -47,19 +44,5 @@ export default function SearchResult() {
     setIsInit(false)
   }, [isInit, setIsInit, setItems])
 
-  return (
-    <article className={styles.wrapper}>
-      {items.length === 0 ? (
-        <div>검색 결과가 없습니다.</div>
-      ) : (
-        <ul>
-          {items.map((item: ISearchItem, index) => {
-            const key = `searchItem-${index}`
-            return <SearchItem key={key} item={item} />
-          })}
-          <li className={styles.endPoint} ref={targetRef} />
-        </ul>
-      )}
-    </article>
-  )
+  return <List items={items} targetRef={targetRef} />
 }

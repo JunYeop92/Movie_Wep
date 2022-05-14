@@ -44,20 +44,14 @@ export default function Item({ item, isFavorType = false }: IProps) {
         <div className={styles.imgWrapper}>
           <img src={item.Poster} alt='movie_poster' />
         </div>
-        <ul>
-          <li>
-            <dt>Title</dt>
-            <dd>{item.Title}</dd>
+        <ul className={styles.infoList}>
+          <li className={styles.title}>{item.Title}</li>
+          <li className={styles.info}>
+            <span>{item.Year}</span>
+            <span>/</span>
+            <span>{item.Type}</span>
           </li>
-          <li>
-            <dt>Year</dt>
-            <dd>{item.Year}</dd>
-          </li>
-          <li>
-            <dt>Type</dt>
-            <dd>{item.Type}</dd>
-          </li>
-          <li className={styles.icon}>{item.isFavor ? <StarFullIcon /> : <StarIcon />}</li>
+          <li className={styles.icon}>{item.isFavor && <StarFullIcon fill='currentColor' />}</li>
         </ul>
       </button>
       {isOpen && (
@@ -65,15 +59,15 @@ export default function Item({ item, isFavorType = false }: IProps) {
           <div className={styles.modalContent}>
             {item.isFavor ? (
               <button type='button' onClick={handleClickNotFavor}>
-                즐겨찾기 제거
+                Delete Favorites
               </button>
             ) : (
               <button type='button' onClick={handleClickFavor}>
-                즐겨찾기
+                Favorites
               </button>
             )}
             <button type='button' onClick={handleClickClose}>
-              취소
+              Cancle
             </button>
           </div>
         </Modal>

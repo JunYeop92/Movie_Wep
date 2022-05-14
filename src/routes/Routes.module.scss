@@ -1,13 +1,22 @@
 @use '/src/styles/constants/colors';
+@import url('https://fonts.googleapis.com/css2?family=Mukta&display=swap');
 
 .app {
   display: flex;
   flex-direction: column;
   height: 100vh;
+  font-family: Mukta, sans-serif;
 
   footer {
     position: sticky;
     bottom: 0;
     width: 100%;
+    border-top: 1px solid colors.$BLUE;
+    box-shadow: rgba(50, 50, 93, 25%) 0 -6px 12px -2px, rgba(0, 0, 0, 30%) 0 -3px 7px -3px;
   }
+}
+
+input,
+button {
+  font-family: inherit !important;
 }

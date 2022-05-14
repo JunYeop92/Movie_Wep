@@ -15,7 +15,8 @@
     @include flexbox.flexbox(center, center);
     width: 300px;
     height: 150px;
+    font-family: Mukta, sans-serif;
     background-color: colors.$WHITE;
-    border-radius: 10px;
+    border-radius: 5px;
   }
 }

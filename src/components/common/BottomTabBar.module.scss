@@ -3,7 +3,6 @@
 .nav {
   ul {
     display: flex;
-    border-top: 1px solid colors.$GRAY6;
 
     li {
       width: 100%;
@@ -13,10 +12,11 @@
     }
 
     a {
-      color: colors.$GRAY2;
+      color: colors.$GRAYA;
 
       &.active {
         font-weight: 600;
+        color: colors.$BLUE;
       }
     }
   }

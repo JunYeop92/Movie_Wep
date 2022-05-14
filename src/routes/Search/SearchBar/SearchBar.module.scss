@@ -1,20 +1,29 @@
 @use '/src/styles/constants/colors';
+@use '/src/styles/mixins/flexbox';
 
 .form {
   display: flex;
   width: 100%;
+  border-radius: 5px;
+  outline: 1px solid colors.$BLUE;
 
   input[type='search'] {
     flex-grow: 1;
     min-width: 0;
     padding: 5px;
     font-size: 1.2rem;
-    border: 1px solid colors.$BLACK;
   }
 
   button[type='submit'] {
-    width: 43px;
-    border: 1px solid;
-    border-left: none;
+    @include flexbox.flexbox(center, center);
+    width: 35px;
+    color: colors.$WHITE;
+    background-color: colors.$BLUE;
+    border-left: 1px solid colors.$BLUE;
+    border-radius: 0 5px 5px 0;
+
+    svg {
+      width: 20px;
+    }
   }
 }

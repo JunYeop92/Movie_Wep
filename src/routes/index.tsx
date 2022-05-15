@@ -2,7 +2,7 @@ import { Routes, Route } from 'react-router-dom'
 import styles from './Routes.module.scss'
 import Search from './Search'
 import Favorites from './Favorites'
-import BottomTabBar from 'components/common/BottomTabBar'
+import BottomTabBar from 'components/BottomTabBar'
 
 export default function App() {
   return (
@@ -10,7 +10,6 @@ export default function App() {
       <div className={styles.phone}>
         <Routes>
           <Route path='/' element={<Search />} />
-          <Route path='search' element={<Search />} />
           <Route path='favorites' element={<Favorites />} />
         </Routes>
         <footer>

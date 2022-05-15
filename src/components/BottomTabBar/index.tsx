@@ -7,7 +7,7 @@ export default function BottomTabBar() {
     <nav className={styles.nav}>
       <ul>
         <li>
-          <NavLink to='search' className={({ isActive }) => cx({ [styles.active]: isActive })}>
+          <NavLink to='/' className={({ isActive }) => cx({ [styles.active]: isActive })}>
             Search
           </NavLink>
         </li>

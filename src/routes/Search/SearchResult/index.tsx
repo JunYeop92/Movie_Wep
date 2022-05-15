@@ -1,10 +1,11 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
-import _ from 'lodash'
 import { useRecoilState } from 'recoil'
 import { searchInputAtom, isInitSearchAtom, searchItemsAtom } from 'recoil/search'
 import { fetchSearchData } from 'services/search'
 import useInfiniteScroll from 'hooks/useInfiniteScroll'
 import List from 'components/List'
+import styles from './SearchResult.module.scss'
+import { cx } from 'styles'
 
 export default function SearchResult() {
   const [isInit, setIsInit] = useRecoilState(isInitSearchAtom)
@@ -13,14 +14,36 @@ export default function SearchResult() {
   const [hasNextPage, setHasNextPage] = useState(false)
   const overlapCountRef = useRef(0)
 
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState({
+    isError: false,
+    msg: '',
+  })
+
   const fetchCallback = useCallback(
     async (page: number) => {
       if (searchInput === '') return
-      const { searchItems, totalResults, overlapCount } = await fetchSearchData(searchInput, page)
+      setLoading(true)
+      const data = await fetchSearchData(searchInput, page)
+      if (!data.response) {
+        setLoading(false)
+        setError({
+          isError: true,
+          msg: data.errorMsg as string,
+        })
+        return
+      }
+
+      const { searchItems, totalResults, overlapCount } = data as any
       setItems((prev) => [...prev, ...searchItems])
       overlapCountRef.current += overlapCount
       const endPage = Math.ceil(Number(totalResults - overlapCountRef.current) / 10) // 최종 개수 - 중복 개수
       setHasNextPage(page < endPage)
+      setLoading(false)
+      setError({
+        isError: false,
+        msg: '',
+      })
     },
     [searchInput, setItems]
   )
@@ -49,9 +72,8 @@ export default function SearchResult() {
     }
   }, [setItems, setSearchInput])
 
-  // useEffect(() => {
-  //   fetchCallback(1)
-  // }, [fetchCallback])
-
+  if (error.isError) return <div className={cx(styles.exception, styles.error)}>Error : {error.msg}</div>
+  if (loading) return <div className={styles.exception}>loading...</div>
+  if (searchInput === '') return <div className={styles.exception}>No Results Found</div>
   return <List items={items} targetRef={targetRef} />
 }

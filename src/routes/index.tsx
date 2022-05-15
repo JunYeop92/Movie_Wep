@@ -7,14 +7,16 @@ import BottomTabBar from 'components/common/BottomTabBar'
 export default function App() {
   return (
     <div className={styles.app}>
-      <Routes>
-        <Route path='/' element={<Search />} />
-        <Route path='search' element={<Search />} />
-        <Route path='favorites' element={<Favorites />} />
-      </Routes>
-      <footer>
-        <BottomTabBar />
-      </footer>
+      <div className={styles.phone}>
+        <Routes>
+          <Route path='/' element={<Search />} />
+          <Route path='search' element={<Search />} />
+          <Route path='favorites' element={<Favorites />} />
+        </Routes>
+        <footer>
+          <BottomTabBar />
+        </footer>
+      </div>
     </div>
   )
 }

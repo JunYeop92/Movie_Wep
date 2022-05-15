@@ -1,0 +1,13 @@
+@use '/src/styles/constants/colors';
+@use '/src/styles/mixins/flexbox';
+
+.exception {
+  margin-top: 20px;
+  font-size: 2rem;
+  color: colors.$BLUE;
+  text-align: center;
+}
+
+.error {
+  color: colors.$RED;
+}

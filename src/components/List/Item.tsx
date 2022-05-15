@@ -4,7 +4,7 @@ import { searchItemsAtom, favorItemsAtom } from 'recoil/search'
 import { ISearchItem } from 'types/search.d'
 
 import styles from './Item.module.scss'
-import { StarFullIcon, StarIcon } from 'assets/svgs'
+import { StarFullIcon } from 'assets/svgs'
 import Modal from 'components/Modal'
 import { favorStorage } from 'utils'
 

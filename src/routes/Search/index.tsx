@@ -1,8 +1,7 @@
-import { Suspense } from 'react'
 import Logo from './Logo'
-import styles from './Search.module.scss'
 import SearchBar from './SearchBar'
 import SearchResult from './SearchResult'
+import styles from './Search.module.scss'
 
 export default function Search() {
   return (
@@ -12,9 +11,7 @@ export default function Search() {
         <SearchBar />
       </header>
       <main className={styles.main}>
-        <Suspense fallback={<div>loading...</div>}>
-          <SearchResult />
-        </Suspense>
+        <SearchResult />
       </main>
     </>
   )

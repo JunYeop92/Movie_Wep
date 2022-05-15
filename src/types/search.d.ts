@@ -1,3 +1,8 @@
+export interface ISearchParams {
+  s: string
+  page: number
+}
+
 export interface ISearchItem {
   Title: string
   Year: string
@@ -13,7 +18,7 @@ export interface ISearchAPIRes {
   Response: boolean
 }
 
-export interface ISearchParams {
-  s: string
-  page: number
+export interface ISearchAPIError {
+  Error: string
+  Response: boolean
 }

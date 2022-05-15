@@ -1,4 +1,7 @@
 ## 영화 검색 앱
+
+### 배포 : https://silver-cannoli-998729.netlify.app/
+
 - Recoil을 사용했습니다.
 - 검색 기능
   - SearchBar 컴포넌트 : 검색어를 입력받습니다.

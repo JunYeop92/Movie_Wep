@@ -2,10 +2,11 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { useRecoilState } from 'recoil'
 import { searchInputAtom, isInitSearchAtom, searchItemsAtom } from 'recoil/search'
 import { fetchSearchData } from 'services/search'
+import { cx } from 'styles'
+import styles from './SearchResult.module.scss'
 import useInfiniteScroll from 'hooks/useInfiniteScroll'
 import List from 'components/List'
-import styles from './SearchResult.module.scss'
-import { cx } from 'styles'
+import Modal from 'components/Modal'
 
 export default function SearchResult() {
   const [isInit, setIsInit] = useRecoilState(isInitSearchAtom)
@@ -25,8 +26,9 @@ export default function SearchResult() {
       if (searchInput === '') return
       setLoading(true)
       const data = await fetchSearchData(searchInput, page)
+      setLoading(false)
+
       if (!data.response) {
-        setLoading(false)
         setError({
           isError: true,
           msg: data.errorMsg as string,
@@ -39,7 +41,6 @@ export default function SearchResult() {
       overlapCountRef.current += overlapCount
       const endPage = Math.ceil(Number(totalResults - overlapCountRef.current) / 10) // 최종 개수 - 중복 개수
       setHasNextPage(page < endPage)
-      setLoading(false)
       setError({
         isError: false,
         msg: '',
@@ -73,7 +74,15 @@ export default function SearchResult() {
   }, [setItems, setSearchInput])
 
   if (error.isError) return <div className={cx(styles.exception, styles.error)}>Error : {error.msg}</div>
-  if (loading) return <div className={styles.exception}>loading...</div>
   if (searchInput === '') return <div className={styles.exception}>No Results Found</div>
-  return <List items={items} targetRef={targetRef} />
+  return (
+    <>
+      <List items={items} targetRef={targetRef} />
+      {loading && (
+        <Modal>
+          <div className={styles.exception}>loading...</div>
+        </Modal>
+      )}
+    </>
+  )
 }
